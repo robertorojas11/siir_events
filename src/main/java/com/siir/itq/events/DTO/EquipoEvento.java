@@ -2,27 +2,21 @@ package com.siir.itq.events.DTO;
 
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EquipoEvento {
     private UUID idEquipoLocal;
 
     @Size(min = 1, max = 255)
     private String nombreEquipoForaneo;
-
-    //Getters and Setters
-    public UUID getIdEquipoLocal() {
-        return idEquipoLocal;
-    }
-    public void setIdEquipoLocal(UUID idEquipoLocal) {
-        this.idEquipoLocal = idEquipoLocal;
-    }
-    public String getNombreEquipoForaneo() {
-        return nombreEquipoForaneo;
-    }
-    public void setNombreEquipoForaneo(String nombreEquipoForaneo) {
-        this.nombreEquipoForaneo = nombreEquipoForaneo;
-    }
 
     @AssertTrue(message = "Debe especificarse 'idEquipoLocal' o 'equipoForaneoNombre', pero no ambos ni ninguno.")
     public boolean isValid() {

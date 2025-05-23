@@ -3,12 +3,21 @@ package com.siir.itq.events.DTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EventoBase {
     @NotNull(message = "El nombre no puede ser nulo")
     @Size(min = 1, max = 255, message = "El nombre debe tener entre 1 y 255 caracteres")
@@ -29,50 +38,7 @@ public class EventoBase {
     @Size(min = 1, max = 255, message = "El lugar de la sede debe tener entre 1 y 255 caracteres")
     private String lugar;
 
-    @NotNull(message = "La lista de equipos no puede ser nula")
+    @NotEmpty(message = "La lista de equipos no puede estar vacía")
     @Valid
     private List<ItemEquipo> equipos;
-
-    // Getters and Setters
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public OffsetDateTime getFechaInicio() {
-        return fechaInicio;
-    }
-    public void setFechaInicio(OffsetDateTime fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public UUID getIdTipoEvento() {
-        return idTipoEvento;
-    }
-    public void setIdTipoEvento(UUID idTipoEvento) {
-        this.idTipoEvento = idTipoEvento;
-    }
-
-    public Integer getDuracion() {
-        return duracion;
-    }
-    public void setDuracion(Integer duracion) {
-        this.duracion = duracion;
-    }
-
-    public String getLugar() {
-        return lugar;
-    }
-    public void setLugar(String lugar) {
-        this.lugar = lugar;
-    }
-
-    public List<ItemEquipo> getEquipos() {
-        return equipos;
-    }
-    public void setEquipos(List<ItemEquipo> equipos) {
-        this.equipos = equipos;
-    }
 }

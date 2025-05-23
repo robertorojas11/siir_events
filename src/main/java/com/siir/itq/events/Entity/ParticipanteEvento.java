@@ -1,6 +1,10 @@
 package com.siir.itq.events.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.UUID;
 
 @Entity
@@ -8,6 +12,10 @@ import java.util.UUID;
             @UniqueConstraint(columnNames = {"evento_id", "equipo_local_id"}),
             @UniqueConstraint(columnNames = {"evento_id", "equipo_visitante_nombre"})
     })
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ParticipanteEvento {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -25,42 +33,6 @@ public class ParticipanteEvento {
 
     @Column(nullable = true)
     private Double puntuacion;
-
-    // Getters and Setters
-    public UUID getId() {
-        return id;
-    }
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public Evento getEvento() {
-        return evento;
-    }
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
-
-    public UUID getEquipoLocalId() {
-        return equipoLocalId;
-    }
-    public void setEquipoLocalId(UUID equipoLocalId) {
-        this.equipoLocalId = equipoLocalId;
-    }
-
-    public String getEquipoVisitanteNombre() {
-        return equipoVisitanteNombre;
-    }
-    public void setEquipoVisitanteNombre(String equipoVisitanteNombre) {
-        this.equipoVisitanteNombre = equipoVisitanteNombre;
-    }
-
-    public Double getPuntuacion() {
-        return puntuacion;
-    }
-    public void setPuntuacion(Double puntuacion) {
-        this.puntuacion = puntuacion;
-    }
 
     @PrePersist
     @PreUpdate
