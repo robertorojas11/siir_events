@@ -7,7 +7,7 @@ import com.siir.itq.events.DTO.ItemEquipo;
 import com.siir.itq.events.DTO.EquipoEvento;
 import com.siir.itq.events.Entity.Evento;
 import com.siir.itq.events.Entity.ParticipanteEvento;
-import com.siir.itq.events.Exception.ResourceNotFoundException;
+import com.siir.itq.events.config.exceptions.CustomExceptions.ResourceNotFoundException;
 import com.siir.itq.events.Repository.EventoRepository;
 import com.siir.itq.events.Repository.ParticipanteEventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class EventoServiceImpl implements EventoService{
     @Transactional
     public EventoResponse actualizarEvento(UUID idEvento, EventoBase eventoBaseDto) {
         Evento evento = eventoRepository.findById(idEvento)
-                .orElseThrow(() -> new ResourceNotFoundException("Evento no encontrado con ID: " + idEvento));
+                .orElseThrow(() -> new ResourceNotFoundException("Evento"  ,idEvento.toString()));
 
         mapBaseDtoToEntity(eventoBaseDto, evento);
         
@@ -82,7 +82,7 @@ public class EventoServiceImpl implements EventoService{
     @Transactional
     public void eliminarEvento(UUID idEvento) {
         if (!eventoRepository.existsById(idEvento)) {
-            throw new ResourceNotFoundException("Evento no encontrado con ID: " + idEvento);
+            throw new ResourceNotFoundException("Evento", idEvento.toString());
         }
         eventoRepository.deleteById(idEvento);
     }
@@ -91,9 +91,12 @@ public class EventoServiceImpl implements EventoService{
     @Transactional
     public EventoFin asignarPuntaje(UUID idEvento, UUID idEquipo, EventoFin eventoFinDto) {
         // idEquipo here refers to idEquipoLocal of a ParticipanteEvento
-        ParticipanteEvento participante = participanteEventoRepository.findByEventoIdAndEquipoIdLocal(idEvento, idEquipo)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Participante no encontrado para el evento ID: " + idEvento + " y equipo ID: " + idEquipo));
+
+        Evento evento = eventoRepository.findById(idEvento)
+                .orElseThrow(() -> new ResourceNotFoundException("Evento", idEvento.toString()));
+        ParticipanteEvento participante = participanteEventoRepository.findByEventoAndIdEquipo(evento, idEquipo)
+                .orElseThrow(() -> new ResourceNotFoundException(   
+                        "Equipo" , idEquipo.toString()));
 
         participante.setPuntuacion(eventoFinDto.getPuntuacion());
         participanteEventoRepository.save(participante);
@@ -115,11 +118,11 @@ public class EventoServiceImpl implements EventoService{
     
     private void mapEquipoDtoToParticipante(EquipoEvento equipoDto, ParticipanteEvento participante) {
         if (equipoDto.getIdEquipoLocal() != null) {
-            participante.setEquipoLocalId(equipoDto.getIdEquipoLocal());
+            participante.setIdEquipo(equipoDto.getIdEquipoLocal());
             participante.setEquipoVisitanteNombre(null);
         } else if (equipoDto.getNombreEquipoForaneo() != null) {
             participante.setEquipoVisitanteNombre(equipoDto.getNombreEquipoForaneo());
-            participante.setEquipoLocalId(null);
+            participante.setIdEquipo(null);
         }
         // Puntuacion is initially null or handled by asignarPuntaje
     }
@@ -136,8 +139,8 @@ public class EventoServiceImpl implements EventoService{
         List<ItemEquipo> itemEquipos = entity.getParticipantes().stream()
             .map(participante -> {
                 EquipoEvento equipoEvento = new EquipoEvento();
-                if (participante.getEquipoLocalId() != null) {
-                    equipoEvento.setIdEquipoLocal(participante.getEquipoLocalId());
+                if (participante.getIdEquipo() != null) {
+                    equipoEvento.setIdEquipoLocal(participante.getIdEquipo());
                 } else {
                     equipoEvento.setNombreEquipoForaneo(participante.getEquipoVisitanteNombre());
                 }

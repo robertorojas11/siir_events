@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-    @Table(name = "participantes_evento", uniqueConstraints = {
+    @Table(name = "participacion_evento", uniqueConstraints = {
             @UniqueConstraint(columnNames = {"evento_id", "equipo_local_id"}),
             @UniqueConstraint(columnNames = {"evento_id", "equipo_visitante_nombre"})
     })
@@ -19,14 +19,14 @@ import java.util.UUID;
 public class ParticipanteEvento {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID id_participacion;
 
     @ManyToOne
-    @JoinColumn(name = "evento_id", nullable = false)
+    @JoinColumn(name = "id_evento", nullable = false)
     private Evento evento;
 
-    @Column(name = "equipo_local_id", nullable = true)
-    private UUID equipoLocalId;
+    @Column(name = "id_equipo", nullable = true)
+    private UUID idEquipo;
 
     @Column(name = "equipo_externo", nullable = true, length = 255)
     private String equipoVisitanteNombre;
@@ -37,7 +37,7 @@ public class ParticipanteEvento {
     @PrePersist
     @PreUpdate
     public void checkEquipoConstraint() {
-        if (!((equipoLocalId != null && equipoVisitanteNombre == null) || (equipoLocalId == null && equipoVisitanteNombre != null))) {
+        if (!((idEquipo != null && equipoVisitanteNombre == null) || (idEquipo == null && equipoVisitanteNombre != null))) {
             throw new IllegalStateException("Un participante debe tener 'equipoIdLocal' o 'equipoForaneoNombre', pero no ambos ni ninguno.");
         }
     }
