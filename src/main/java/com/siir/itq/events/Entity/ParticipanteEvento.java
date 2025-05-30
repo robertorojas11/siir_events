@@ -8,10 +8,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-    @Table(name = "participacion_evento", uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"evento_id", "equipo_local_id"}),
-            @UniqueConstraint(columnNames = {"evento_id", "equipo_visitante_nombre"})
-    })
+@Table(name = "participacion_evento")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -33,12 +30,4 @@ public class ParticipanteEvento {
 
     @Column(nullable = true)
     private Double puntuacion;
-
-    @PrePersist
-    @PreUpdate
-    public void checkEquipoConstraint() {
-        if (!((idEquipo != null && equipoVisitanteNombre == null) || (idEquipo == null && equipoVisitanteNombre != null))) {
-            throw new IllegalStateException("Un participante debe tener 'equipoIdLocal' o 'equipoForaneoNombre', pero no ambos ni ninguno.");
-        }
-    }
 }

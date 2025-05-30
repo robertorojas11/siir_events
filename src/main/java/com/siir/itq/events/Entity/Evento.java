@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.OffsetDateTime;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class Evento {
     private String nombre;
 
     @Column(nullable = false)
-    private OffsetDateTime fechaInicio;
+    private LocalDateTime fechaInicio;
 
     @Column(nullable = false)
     private UUID tipoEventoId; // Assuming this links to another table or is just an ID
