@@ -5,7 +5,8 @@ import com.siir.itq.events.DTO.EventoFin;
 import com.siir.itq.events.DTO.EventoResponse;
 import com.siir.itq.events.Service.EventoService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,13 +16,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/eventos")
+@RequiredArgsConstructor
 public class EventoController {
+    
     private final EventoService eventoService;
-
-    @Autowired
-    public EventoController(EventoService eventoService) {
-        this.eventoService = eventoService;
-    }
 
     @PostMapping
     public ResponseEntity<EventoResponse> crearEvento(@Valid @RequestBody EventoBase eventoBaseDto) {

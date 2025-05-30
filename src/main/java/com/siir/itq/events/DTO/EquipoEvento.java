@@ -13,13 +13,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EquipoEvento {
+
     private UUID idEquipoLocal;
 
     @Size(min = 1, max = 255)
     private String nombreEquipoForaneo;
 
-    @AssertTrue(message = "Debe especificarse 'idEquipoLocal' o 'equipoForaneoNombre', pero no ambos ni ninguno.")
+    @AssertTrue(message = "Debe especificarse 'idEquipoLocal' o 'nombreEquipoForaneo', pero no ambos ni ninguno.")
     public boolean isValid() {
-        return (idEquipoLocal != null && nombreEquipoForaneo == null) || (idEquipoLocal == null && nombreEquipoForaneo != null);
+        return idEquipoLocal!=null ^ nombreEquipoForaneo!=null;
     }
 }

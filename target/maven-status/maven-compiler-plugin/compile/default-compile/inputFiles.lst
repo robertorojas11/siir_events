@@ -1,24 +1,24 @@
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\config\auditing\AuditorAwareImp.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\config\auditing\JpaConfig.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\config\exceptions\CustomExceptions.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\config\exceptions\dto\ErrorResponse.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\config\exceptions\GlobalExceptionHandler.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\config\security\JwtFilter.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\config\security\JwtHelper.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\config\security\SpringSecurity.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\Controller\EventoController.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\DTO\ApiBadRequestResponse.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\DTO\ApiErrorResponse.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\DTO\EquipoEvento.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\DTO\EventoBase.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\DTO\EventoFin.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\DTO\EventoResponse.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\DTO\ItemEquipo.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\Entity\Evento.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\Entity\ParticipanteEvento.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\enums\TipoUsuario.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\EventsApplication.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\Repository\EventoRepository.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\Repository\ParticipanteEventoRepository.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\Service\EventoService.java
-C:\Users\rrc11\Documents\Servicio Eventos\events\src\main\java\com\siir\itq\events\Service\EventoServiceImpl.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\config\auditing\AuditorAwareImp.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\config\auditing\JpaConfig.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\config\exceptions\CustomExceptions.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\config\exceptions\dto\ErrorResponse.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\config\exceptions\GlobalExceptionHandler.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\config\security\JwtFilter.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\config\security\JwtHelper.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\config\security\SpringSecurity.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\Controller\EventoController.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\DTO\ApiBadRequestResponse.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\DTO\ApiErrorResponse.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\DTO\EquipoEvento.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\DTO\EventoBase.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\DTO\EventoFin.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\DTO\EventoResponse.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\DTO\ItemEquipo.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\Entity\Evento.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\Entity\ParticipanteEvento.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\enums\TipoUsuario.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\EventsApplication.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\Repository\EventoRepository.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\Repository\ParticipanteEventoRepository.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\Service\EventoService.java
+C:\Repositorios\SIIR\backend\siir_events\src\main\java\com\siir\itq\events\Service\EventoServiceImpl.java

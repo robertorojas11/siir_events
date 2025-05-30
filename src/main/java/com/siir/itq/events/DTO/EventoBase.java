@@ -1,6 +1,5 @@
 package com.siir.itq.events.DTO;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -10,7 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.OffsetDateTime;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +24,7 @@ public class EventoBase {
     private String nombre;
 
     @NotNull(message = "La fecha no puede ser nula")
-    private OffsetDateTime fechaInicio;
+    private LocalDateTime fechaInicio;
 
     @NotNull(message = "El ID del tipo de evento no puede ser nulo")
     private UUID idTipoEvento;
@@ -39,6 +39,5 @@ public class EventoBase {
     private String lugar;
 
     @NotEmpty(message = "La lista de equipos no puede estar vacía")
-    @Valid
-    private List<ItemEquipo> equipos;
+    private List<EquipoEvento> equipos;
 }

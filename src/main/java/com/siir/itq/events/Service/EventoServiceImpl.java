@@ -3,14 +3,15 @@ package com.siir.itq.events.Service;
 import com.siir.itq.events.DTO.EventoBase;
 import com.siir.itq.events.DTO.EventoFin;
 import com.siir.itq.events.DTO.EventoResponse;
-import com.siir.itq.events.DTO.ItemEquipo;
 import com.siir.itq.events.DTO.EquipoEvento;
 import com.siir.itq.events.Entity.Evento;
 import com.siir.itq.events.Entity.ParticipanteEvento;
 import com.siir.itq.events.config.exceptions.CustomExceptions.ResourceNotFoundException;
+
+import lombok.RequiredArgsConstructor;
+
 import com.siir.itq.events.Repository.EventoRepository;
 import com.siir.itq.events.Repository.ParticipanteEventoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,15 +21,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class EventoServiceImpl implements EventoService{
     private final EventoRepository eventoRepository;
     private final ParticipanteEventoRepository participanteEventoRepository;
-
-    @Autowired
-    public EventoServiceImpl(EventoRepository eventoRepository, ParticipanteEventoRepository participanteEventoRepository) {
-        this.eventoRepository = eventoRepository;
-        this.participanteEventoRepository = participanteEventoRepository;
-    }
 
     @Override
     @Transactional
@@ -39,9 +35,9 @@ public class EventoServiceImpl implements EventoService{
         // Clear existing participants if any (should not happen for new event) and add new ones
         evento.getParticipantes().clear(); 
         if (eventoBaseDto.getEquipos() != null) {
-            for (ItemEquipo itemEquipoDto : eventoBaseDto.getEquipos()) {
+            for (EquipoEvento itemEquipoDto : eventoBaseDto.getEquipos()) {
                 ParticipanteEvento participante = new ParticipanteEvento();
-                mapEquipoDtoToParticipante(itemEquipoDto.getEquipoEvento(), participante);
+                mapEquipoDtoToParticipante(itemEquipoDto, participante);
                 evento.addParticipante(participante);
             }
         }
@@ -62,9 +58,9 @@ public class EventoServiceImpl implements EventoService{
         
         List<ParticipanteEvento> nuevosParticipantes = new ArrayList<>();
         if (eventoBaseDto.getEquipos() != null) {
-            for (ItemEquipo itemEquipoDto : eventoBaseDto.getEquipos()) {
+            for (EquipoEvento itemEquipoDto : eventoBaseDto.getEquipos()) {
                 ParticipanteEvento participante = new ParticipanteEvento();
-                mapEquipoDtoToParticipante(itemEquipoDto.getEquipoEvento(), participante);
+                mapEquipoDtoToParticipante(itemEquipoDto, participante);
                 nuevosParticipantes.add(participante);
             }
         }
@@ -136,7 +132,7 @@ public class EventoServiceImpl implements EventoService{
         dto.setDuracion(entity.getDuracion());
         dto.setLugar(entity.getLugar());
         
-        List<ItemEquipo> itemEquipos = entity.getParticipantes().stream()
+        List<EquipoEvento> itemEquipos = entity.getParticipantes().stream()
             .map(participante -> {
                 EquipoEvento equipoEvento = new EquipoEvento();
                 if (participante.getIdEquipo() != null) {
@@ -144,9 +140,7 @@ public class EventoServiceImpl implements EventoService{
                 } else {
                     equipoEvento.setNombreEquipoForaneo(participante.getEquipoVisitanteNombre());
                 }
-                ItemEquipo itemEquipo = new ItemEquipo();
-                itemEquipo.setEquipoEvento(equipoEvento);
-                return itemEquipo;
+                return equipoEvento;
             })
             .collect(Collectors.toList());
         dto.setEquipos(itemEquipos);
