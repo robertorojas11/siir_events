@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.OffsetDateTime;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class EventoResponse {
     private UUID id;
     private String nombre;
-    private OffsetDateTime fechaInicio;
+    private LocalDateTime fechaInicio;
     private TipoEvento tipoEvento;
     private Integer duracion;
     private String lugar;

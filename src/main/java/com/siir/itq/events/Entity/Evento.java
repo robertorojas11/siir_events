@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import com.siir.itq.events.DTO.TipoEvento;
 
@@ -23,13 +23,14 @@ public class Evento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_evento")
     private UUID id;
 
     @Column(nullable = false, length = 255)
     private String nombre;
 
     @Column(nullable = false)
-    private OffsetDateTime fechaInicio;
+    private LocalDateTime fechaInicio;
 
     @Enumerated(EnumType.STRING) // Store enum as string
     @Column(nullable = false)
@@ -42,6 +43,7 @@ public class Evento {
     private String lugar;
 
     @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    
     private List<ParticipanteEvento> participantes = new ArrayList<>();
 
     public void addParticipante(ParticipanteEvento participante) {

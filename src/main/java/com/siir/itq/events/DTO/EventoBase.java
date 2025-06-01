@@ -8,7 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.OffsetDateTime;
+
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -20,7 +21,7 @@ public class EventoBase {
     private String nombre;
 
     @NotNull(message = "La fecha no puede ser nula")
-    private OffsetDateTime fechaInicio;
+    private LocalDateTime fechaInicio;
 
     @NotNull(message = "El ID del tipo de evento no puede ser nulo")
     private TipoEvento tipoEvento;

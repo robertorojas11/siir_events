@@ -5,34 +5,28 @@ import com.siir.itq.events.Entity.Evento;
 import com.siir.itq.events.Entity.ParticipanteEvento;
 import com.siir.itq.events.Client.EquipoServiceClient;
 import com.siir.itq.events.config.exceptions.CustomExceptions.ResourceNotFoundException;
+
+import lombok.RequiredArgsConstructor;
+
 import com.siir.itq.events.Repository.EventoRepository;
 import com.siir.itq.events.Repository.ParticipanteEventoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class EventoServiceImpl implements EventoService {
 
     private final EventoRepository eventoRepository;
     private final ParticipanteEventoRepository participanteEventoRepository;
     private final EquipoServiceClient equipoServiceClient;
-
-    @Autowired
-    public EventoServiceImpl(EventoRepository eventoRepository,
-                             ParticipanteEventoRepository participanteEventoRepository,
-                             EquipoServiceClient equipoServiceClient) {
-        this.eventoRepository = eventoRepository;
-        this.participanteEventoRepository = participanteEventoRepository;
-        this.equipoServiceClient = equipoServiceClient;
-    }
     
     @Transactional
     public EventoResponse crearEvento(EventoRequest eventoRequestDto) {
@@ -44,8 +38,8 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Transactional
-    public void actualizarEvento(UUID idEvento, EventoRequest eventoRequestDto) {
-        Evento evento = eventoRepository.findById(idEvento)
+    public void actualizarEvento(String idEvento, EventoRequest eventoRequestDto) {
+        Evento evento = eventoRepository.findById(UUID.fromString(idEvento))
                 .orElseThrow(() -> new ResourceNotFoundException("Evento no encontrado con ID: " + idEvento));
         
         // Clear old participants before mapping new ones
@@ -65,16 +59,21 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     @Transactional
-    public void eliminarEvento(UUID idEvento) {
-        if (!eventoRepository.existsById(idEvento)) {
+    public void eliminarEvento(String idEvento) {
+        if (!eventoRepository.existsById(UUID.fromString(idEvento))) {
             throw new ResourceNotFoundException("Evento no encontrado con ID: " + idEvento);
         }
-        eventoRepository.deleteById(idEvento);
+        eventoRepository.deleteById(UUID.fromString(idEvento));
     }
 
     @Transactional
-    public void asignarPuntaje(UUID idEvento, UUID idEquipo, EventoFin eventoFinDto) {
-        ParticipanteEvento participante = participanteEventoRepository.findByEventoAndIdEquipo(idEvento, idEquipo)
+    public void asignarPuntaje(String idEvento, String idEquipo, EventoFin eventoFinDto) {
+        Optional<Evento> optionalEvento = eventoRepository.findById(UUID.fromString(idEvento));
+        if(!optionalEvento.isPresent()){
+            throw new ResourceNotFoundException("El evento con el id " + idEvento + " no pudo ser encontrado");
+        }
+        
+        ParticipanteEvento participante = participanteEventoRepository.findByEventoAndIdEquipo(optionalEvento.get(), UUID.fromString(idEquipo))
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Participante (equipo local) no encontrado para el evento ID: " + idEvento + " y equipo ID: " + idEquipo));
 
@@ -83,41 +82,41 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Transactional(readOnly = true)
-    public ListaEventos getEventos(boolean futuros, UUID idEquipo) {
-        OffsetDateTime fechaActual = OffsetDateTime.now(ZoneOffset.UTC);
+    public List<EventoResponse> getEventos(boolean futuros, String idEquipo) {
+        LocalDateTime fechaActual = LocalDateTime.now();
         List<Evento> eventos;
 
         if (idEquipo != null) {
             if (futuros) {
-                eventos = eventoRepository.findEventosFuturosByEquipoLocal(fechaActual, idEquipo);
+                eventos = eventoRepository.findByFechaInicioAfterAndParticipantesIdEquipo(fechaActual, UUID.fromString(idEquipo));
             } else {
-                eventos = eventoRepository.findEventosPasadosByEquipoLocal(fechaActual, idEquipo);
+                eventos = eventoRepository.findByFechaInicioBeforeAndParticipantesIdEquipo(fechaActual, UUID.fromString(idEquipo));
             }
         } else {
             if (futuros) {
-                eventos = eventoRepository.findEventosFuturos(fechaActual);
+                eventos = eventoRepository.findByFechaInicioAfter(fechaActual);
             } else {
-                eventos = eventoRepository.findEventosPasados(fechaActual);
+                eventos = eventoRepository.findByFechaInicioBefore(fechaActual);
             }
         }
         
-        List<EventoResponse> eventoResponses = eventos.stream()
-                .map(this::mapEntityToResponseDto)
-                .collect(Collectors.toList());
-        return new ListaEventos(eventoResponses);
+        return eventos.stream()
+            .map(this::mapEntityToResponseDto)
+            .collect(Collectors.toList());
     }
     
     @Transactional(readOnly = true)
-    public List<EquipoEventoResponse> getParticipantesByEvento(UUID idEvento, OffsetDateTime fechaInicio) {
+    public List<EquipoEventoResponse> getParticipantesByEvento(String idEvento) {
 
-        if (!eventoRepository.existsById(idEvento)) {
-            throw new ResourceNotFoundException("Evento no encontrado con ID: " + idEvento);
+        Optional<Evento> optionalEvento = eventoRepository.findById(UUID.fromString(idEvento));
+        if(!optionalEvento.isPresent()){
+            throw new ResourceNotFoundException("El evento con el id " + idEvento + " no pudo ser encontrado");
         }
 
-        List<ParticipanteEvento> participantes = participanteEventoRepository.findByEventoId(idEvento);
+        List<ParticipanteEvento> participantes = participanteEventoRepository.findByEvento(optionalEvento.get());
         return participantes.stream().map((ParticipanteEvento p) -> {
             if (p.getIdEquipo() != null) {
-                String nombreEquipoLocal = equipoServiceClient.getNombreEquipo(p.getIdEquipo());
+                String nombreEquipoLocal = equipoServiceClient.getNombreEquipo(p.getIdEquipo().toString());
                 return EquipoEventoResponse.forLocalTeam(nombreEquipoLocal);
             } else {
                 return EquipoEventoResponse.forForeignTeam(p.getEquipoVisitanteNombre());
@@ -131,12 +130,11 @@ public class EventoServiceImpl implements EventoService {
     public EventoResponse crearEvento(EventoBase eventoBase) {
         EventoRequest eventoRequest = new EventoRequest();
         eventoRequest.setEventoBase(eventoBase);
-        // You may need to set participantes if required
         return crearEvento(eventoRequest);
     }
 
     @Transactional
-    public void actualizarEvento(UUID idEvento, EventoBase eventoBase) {
+    public void actualizarEvento(String idEvento, EventoBase eventoBase) {
         EventoRequest eventoRequest = new EventoRequest();
         eventoRequest.setEventoBase(eventoBase);
         actualizarEvento(idEvento, eventoRequest);
@@ -175,7 +173,7 @@ public class EventoServiceImpl implements EventoService {
         if (entity.getParticipantes() != null) {
             for (ParticipanteEvento pEntity : entity.getParticipantes()) {
                 if (pEntity.getIdEquipo() != null) {
-                    String nombreEquipoLocal = equipoServiceClient.getNombreEquipo(pEntity.getIdEquipo());
+                    String nombreEquipoLocal = equipoServiceClient.getNombreEquipo(pEntity.getIdEquipo().toString());
                     EquipoEventoResponseItems.add(EquipoEventoResponse.forLocalTeam(nombreEquipoLocal));
                 } else {
                     EquipoEventoResponseItems.add(EquipoEventoResponse.forForeignTeam(pEntity.getEquipoVisitanteNombre()));
