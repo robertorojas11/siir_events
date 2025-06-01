@@ -9,7 +9,7 @@ public enum TipoEvento {
     ENTRENAMIENTO;
 
     @JsonCreator
-    public TipoEvento fromString(String value){
+    public static TipoEvento fromString(String value){
         for(TipoEvento tipoEvento : TipoEvento.values()){
             if(tipoEvento.name().equalsIgnoreCase(value)){
                 return tipoEvento;

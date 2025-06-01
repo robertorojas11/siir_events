@@ -2,16 +2,16 @@
   {
     "name": "siir.teams.url",
     "type": "java.lang.String",
-    "description": "A description for 'siir.teams.url'"
+    "description": "url del servicio de equipos"
   },
   {
     "name": "siir.auth.url",
     "type": "java.lang.String",
-    "description": "A description for 'siir.auth.url'"
+    "description": "url del servicio de usuarios"
   },
   {
     "name": "jwt.secret",
     "type": "java.lang.String",
-    "description": "A description for 'jwt.secret'"
+    "description": "JWT key"
   }
 ]}
