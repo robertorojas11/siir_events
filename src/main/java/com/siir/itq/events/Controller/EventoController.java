@@ -3,29 +3,23 @@ package com.siir.itq.events.Controller;
 import com.siir.itq.events.DTO.*;
 import com.siir.itq.events.Service.EventoService;
 import jakarta.validation.Valid;
-import org.springframework.format.annotation.DateTimeFormat;
-import java.time.OffsetDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
-import java.util.UUID;
 import java.util.List;
 
 @RestController
 @RequestMapping("/eventos")
+@RequiredArgsConstructor
 public class EventoController {
 
     private final EventoService eventoService;
 
-    @Autowired
-    public EventoController(EventoService eventoService) {
-        this.eventoService = eventoService;
-    }
-
     @PostMapping
-    public ResponseEntity<EventoResponse> crearEvento(@Valid @RequestBody EventoRequest eventoRequestDto) {
+    public ResponseEntity<?> crearEvento(@Valid @RequestBody EventoRequest eventoRequestDto) {
         EventoResponse eventoCreado = eventoService.crearEvento(eventoRequestDto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -35,41 +29,40 @@ public class EventoController {
     }
 
     @GetMapping
-    public ResponseEntity<ListaEventos> getEventos(
+    public ResponseEntity<?> getEventos(
             @RequestParam(required = true) boolean futuros,
-            @RequestParam(required = false) UUID idEquipo) {
-        ListaEventos listaEventos = eventoService.getEventos(futuros, idEquipo);
-        return ResponseEntity.ok(listaEventos);
+            @RequestParam(required = false) String idEquipo) {
+        
+        return ResponseEntity.ok(eventoService.getEventos(futuros, idEquipo));
     }
 
     @PutMapping("/{idEvento}")
-    public ResponseEntity<Void> actualizarEvento(
-            @PathVariable UUID idEvento,
+    public ResponseEntity<?> actualizarEvento(
+            @PathVariable String idEvento,
             @Valid @RequestBody EventoRequest eventoRequestDto) {
         eventoService.actualizarEvento(idEvento, eventoRequestDto);
         return ResponseEntity.noContent().build(); // 204 No Content
     }
 
     @DeleteMapping("/{idEvento}")
-    public ResponseEntity<Void> eliminarEvento(@PathVariable UUID idEvento) {
+    public ResponseEntity<?> eliminarEvento(@PathVariable String idEvento) {
         eventoService.eliminarEvento(idEvento);
         return ResponseEntity.noContent().build(); // 204 No Content
     }
     
     @GetMapping("/{idEvento}/participantes")
     public ResponseEntity<List<EquipoEventoResponse>> getParticipantesByEvento(
-            @PathVariable UUID idEvento,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime fechaInicio) {
+            @PathVariable String idEvento) {
         // The OAS specifies ParticipantesEventoResponse as the schema, which is an array of the items.
         // So, List<ParticipanteResponseItem> is appropriate.
-        List<EquipoEventoResponse> participantes = eventoService.getParticipantesByEvento(idEvento, fechaInicio);
+        List<EquipoEventoResponse> participantes = eventoService.getParticipantesByEvento(idEvento);
         return ResponseEntity.ok(participantes);
     }
 
     @PutMapping("/{idEvento}/equipos/{idEquipo}")
-    public ResponseEntity<Void> asignarPuntajeEvento( // Renamed from asignarPuntaje to avoid conflict if EventoFin was used elsewhere
-            @PathVariable UUID idEvento,
-            @PathVariable UUID idEquipo, // This is id_equipo_local
+    public ResponseEntity<?> asignarPuntajeEvento( // Renamed from asignarPuntaje to avoid conflict if EventoFin was used elsewhere
+            @PathVariable String idEvento,
+            @PathVariable String idEquipo, // This is id_equipo_local
             @Valid @RequestBody EventoFin eventoFinDto) {
         eventoService.asignarPuntaje(idEvento, idEquipo, eventoFinDto);
         return ResponseEntity.noContent().build(); // 204 No Content

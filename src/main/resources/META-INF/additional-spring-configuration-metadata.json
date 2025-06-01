@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "siir.teams.url",
+    "type": "java.lang.String",
+    "description": "url del servicio de equipos"
+  },
+  {
+    "name": "siir.auth.url",
+    "type": "java.lang.String",
+    "description": "url del servicio de usuarios"
+  },
+  {
+    "name": "jwt.secret",
+    "type": "java.lang.String",
+    "description": "JWT key"
+  }
+]}

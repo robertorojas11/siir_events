@@ -21,7 +21,6 @@ public class EquipoEventoRequest {
 
     @AssertTrue(message = "Debe especificarse 'idEquipoLocal' o 'nombreEquipoForaneo', pero no ambos ni ninguno.")
     public boolean isOneOfConstraintValid() {
-        return (idEquipoLocal != null && nombreEquipoForaneo == null) ||
-               (idEquipoLocal == null && nombreEquipoForaneo != null);
+        return idEquipoLocal!=null ^ nombreEquipoForaneo!=null;
     }
 }
