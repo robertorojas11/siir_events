@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EquipoEvento {
+public class EquipoEventoRequest {
 
     private UUID idEquipoLocal;
 
@@ -20,7 +20,8 @@ public class EquipoEvento {
     private String nombreEquipoForaneo;
 
     @AssertTrue(message = "Debe especificarse 'idEquipoLocal' o 'nombreEquipoForaneo', pero no ambos ni ninguno.")
-    public boolean isValid() {
-        return idEquipoLocal!=null ^ nombreEquipoForaneo!=null;
+    public boolean isOneOfConstraintValid() {
+        return (idEquipoLocal != null && nombreEquipoForaneo == null) ||
+               (idEquipoLocal == null && nombreEquipoForaneo != null);
     }
 }

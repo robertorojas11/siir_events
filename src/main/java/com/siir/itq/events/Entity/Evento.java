@@ -6,18 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.time.OffsetDateTime;
+
+import com.siir.itq.events.DTO.TipoEvento;
 
 @Entity
 @Table(name = "eventos")
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Evento {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -26,10 +29,11 @@ public class Evento {
     private String nombre;
 
     @Column(nullable = false)
-    private LocalDateTime fechaInicio;
+    private OffsetDateTime fechaInicio;
 
+    @Enumerated(EnumType.STRING) // Store enum as string
     @Column(nullable = false)
-    private UUID tipoEventoId; // Assuming this links to another table or is just an ID
+    private TipoEvento tipoEvento; // Changed from tipoEventoId (UUID)
 
     @Column(nullable = false)
     private Integer duracion; // in minutes

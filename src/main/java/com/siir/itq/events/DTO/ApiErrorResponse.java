@@ -1,26 +1,22 @@
 package com.siir.itq.events.DTO;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class ApiErrorResponse {
+    private int statusCode;
+    private String status;
     private String message;
-    private String reason;
-
-    public ApiErrorResponse(String reason, String message) {
+    private String timestamp;
+    
+    public ApiErrorResponse(int statusCode, String status, String message, String timestamp) {
+        this.statusCode = statusCode;
+        this.status = status;
         this.message = message;
-        this.reason = reason;
-    }
-
-    // Getters and Setters
-    public String getMessage() {
-        return message;
-    }
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-    public void setReason(String reason) {
-        this.reason = reason;
+        this.timestamp = timestamp;
     }
 }

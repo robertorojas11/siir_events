@@ -4,22 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventoResponse {
     private UUID id;
     private String nombre;
-    private LocalDateTime fechaInicio;
-    private UUID idTipoEvento;
-    private Integer duracion; // en minutos
+    private OffsetDateTime fechaInicio;
+    private TipoEvento tipoEvento;
+    private Integer duracion;
     private String lugar;
-    private List<EquipoEvento> equipos;
-
+    private List<EquipoEventoResponse> participantes;
 }

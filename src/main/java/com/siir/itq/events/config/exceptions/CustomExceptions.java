@@ -2,9 +2,9 @@ package com.siir.itq.events.config.exceptions;
 
 public class CustomExceptions {
     public static class ResourceNotFoundException extends RuntimeException{
-        public ResourceNotFoundException(String resourceName, String id){
-            super(String.format("El recurso %s con el id %s no pudo ser encontrado", resourceName, id));
-        }
+        public ResourceNotFoundException(String message) {
+        super(message);
+    }
     }
 
     public static class ResourceConflictException extends RuntimeException{
