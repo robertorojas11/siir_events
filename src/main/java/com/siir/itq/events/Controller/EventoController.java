@@ -19,7 +19,7 @@ public class EventoController {
     private final EventoService eventoService;
 
     @PostMapping
-    public ResponseEntity<EventoResponse> crearEvento(@Valid @RequestBody EventoRequest eventoRequestDto) {
+    public ResponseEntity<?> crearEvento(@Valid @RequestBody EventoRequest eventoRequestDto) {
         EventoResponse eventoCreado = eventoService.crearEvento(eventoRequestDto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -37,7 +37,7 @@ public class EventoController {
     }
 
     @PutMapping("/{idEvento}")
-    public ResponseEntity<Void> actualizarEvento(
+    public ResponseEntity<?> actualizarEvento(
             @PathVariable String idEvento,
             @Valid @RequestBody EventoRequest eventoRequestDto) {
         eventoService.actualizarEvento(idEvento, eventoRequestDto);
@@ -45,7 +45,7 @@ public class EventoController {
     }
 
     @DeleteMapping("/{idEvento}")
-    public ResponseEntity<Void> eliminarEvento(@PathVariable String idEvento) {
+    public ResponseEntity<?> eliminarEvento(@PathVariable String idEvento) {
         eventoService.eliminarEvento(idEvento);
         return ResponseEntity.noContent().build(); // 204 No Content
     }
@@ -60,7 +60,7 @@ public class EventoController {
     }
 
     @PutMapping("/{idEvento}/equipos/{idEquipo}")
-    public ResponseEntity<Void> asignarPuntajeEvento( // Renamed from asignarPuntaje to avoid conflict if EventoFin was used elsewhere
+    public ResponseEntity<?> asignarPuntajeEvento( // Renamed from asignarPuntaje to avoid conflict if EventoFin was used elsewhere
             @PathVariable String idEvento,
             @PathVariable String idEquipo, // This is id_equipo_local
             @Valid @RequestBody EventoFin eventoFinDto) {
