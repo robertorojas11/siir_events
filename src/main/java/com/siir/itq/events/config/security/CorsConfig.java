@@ -18,11 +18,14 @@ public class CorsConfig {
     @Value("${siir.auth.url}")
     String authUrl;
 
+    @Value("${siir.web.url}")
+    String webUrl;
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:3000", teamsUrl, authUrl));
+        config.setAllowedOrigins(List.of(webUrl, teamsUrl, authUrl));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH")); 
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
