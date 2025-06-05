@@ -7,14 +7,13 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventoResponse {
-    private UUID id;
+    private String idEvento;
     private String nombre;
     private LocalDateTime fechaInicio;
     private TipoEvento tipoEvento;

@@ -23,7 +23,7 @@ public class EventoController {
         EventoResponse eventoCreado = eventoService.crearEvento(eventoRequestDto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(eventoCreado.getId()) // Assuming EventoResponse has getId()
+                .buildAndExpand(eventoCreado.getIdEvento()) // Assuming EventoResponse has getId()
                 .toUri();
         return ResponseEntity.created(location).body(eventoCreado);
     }

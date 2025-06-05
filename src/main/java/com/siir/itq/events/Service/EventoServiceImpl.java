@@ -182,7 +182,7 @@ public class EventoServiceImpl implements EventoService {
         }
 
         return new EventoResponse(
-            entity.getId(),
+            entity.getId().toString(),
             entity.getNombre(),
             entity.getFechaInicio(),
             entity.getTipoEvento(),
